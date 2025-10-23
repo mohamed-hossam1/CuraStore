@@ -2,18 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
-export default function ProductCard({ id,  image_cover, title, description, price_before, price, stock}) {
+export default function ProductCard({
+  id,
+  image_cover,
+  title,
+  description,
+  price_before,
+  price,
+  stock,
+}) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const favorite = () => {
     setIsFavorite((prev) => !prev);
   };
 
-  console.log(stock,price_before)
-
   return (
-    <div className="min-w-66 w-full relative group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-gray-200/70 z-50">
+    <motion.div
+      className="min-w-66 w-full relative group bg-white rounded-2xl shadow-lg border-2 border-gray-200/70 z-50"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="absolute w-full top-1/2 p-4 transition-all duration-500 group-hover:-translate-y-20 opacity-0 group-hover:opacity-100 z-40">
         <Link
           href={`/products/${id}`}
@@ -24,43 +37,53 @@ export default function ProductCard({ id,  image_cover, title, description, pric
       </div>
 
       <Link href={`/products/${id}`} className="relative h-64 block">
-        <div className="h-full w-full bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center items-center">
-          <img
+        <motion.div
+          className="h-full w-full bg-gradient-to-br  from-gray-50 to-gray-100 flex justify-center items-center"
+          transition={{ duration: 0.5 }}
+        >
+          <motion.img
             src={image_cover}
             alt={title}
-            className="transition-all duration-700 w-60 h-auto group-hover:scale-110"
+            className="h-full w-full from-gray-50 rounded-t-2xl to-gray-100 flex justify-center items-center"
           />
-        </div>
+        </motion.div>
 
         {stock > 10 && (
-          <span className="absolute top-4 left-4 bg-gradient-to-r from-sky-500 to-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+          <motion.span
+            className="absolute top-4 left-4 bg-gradient-to-r from-sky-500 to-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+          >
             Hot
-          </span>
+          </motion.span>
         )}
 
-        <button
-          onClick={favorite}
-          className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
-            isFavorite
-              ? "bg-red-500 text-white scale-110"
-              : "bg-white/90 hover:bg-white hover:scale-110"
-          }`}
-        >
-          <svg
-            className="w-5 h-5"
-            fill={isFavorite ? "currentColor" : "none"}
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
-        </button>
       </Link>
+      
+      <motion.button
+        onClick={favorite}
+        className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer z-50 ${
+          isFavorite
+            ? "bg-red-500 text-white scale-110"
+            : "bg-white/90 hover:bg-white hover:scale-110"
+        }`}
+        whileTap={{ scale: 0.9 }}
+      >
+        <svg
+          className="w-5 h-5"
+          fill={isFavorite ? "currentColor" : "none"}
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          />
+        </svg>
+      </motion.button>
 
       <div className="p-5 h-60 flex flex-col justify-around">
         <div className="flex items-center justify-between">
@@ -105,10 +128,13 @@ export default function ProductCard({ id,  image_cover, title, description, pric
           {description}
         </p>
 
-        <button className="w-full bg-neutral-300 text-black font-bold py-3 rounded-xl transition-all duration-500 transform hover:scale-105 shadow-lg hover:bg-neutral-950 hover:text-white cursor-pointer">
+        <motion.button
+          className="w-full bg-neutral-300 text-black font-bold py-3 rounded-xl transition-all duration-500 transform hover:scale-105 shadow-lg hover:bg-neutral-950 hover:text-white cursor-pointer"
+          whileTap={{ scale: 0.95 }}
+        >
           Add to Cart
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }

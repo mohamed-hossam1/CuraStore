@@ -92,6 +92,7 @@ export default function CardList({initialData}) {
     <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mb-20">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-center justify-items-center gap-6">
         {data.map((product) => (
+          
           <ProductCard
             key={product.id}
             id={product.id}
@@ -102,6 +103,7 @@ export default function CardList({initialData}) {
             stock={product.stock}
             image_cover={product.image_cover}
           />
+          
         ))}
       </div>
     </div>

@@ -15,4 +15,16 @@ export function useGetProducts(initialData, select="*") {
   });
 }
 
+export function useGetProduct(id,initialData, select="*") {
+  return useQuery({
+    queryKey: ["products", id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("products").select(select).eq("id", id);
+      if (error) throw error;
+      return data;
+    },
+    initialData,
+  });
+}
+
 

@@ -9,7 +9,7 @@ import { useGetProducts } from '../hooks/useProducts';
 export default function Navbar({initialData}) {
   const [searchQuery, setSearchQuery] = useState("");
   
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   const cartItemsCount = 999;
 
   const {data} = useGetProducts(initialData)
