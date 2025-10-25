@@ -32,11 +32,12 @@ function PrevArrow({ onClick }) {
   );
 }
 
-export default function CardList({ products, category_id }) {
+export default function CardList({ products, category_id, exceptProduct }) {
   const [isLoading, isError] = [false, false];
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-
+  console.log(products)
+  
   const {data} = getProductsByCategory(category_id, products);
 
 
@@ -80,7 +81,7 @@ export default function CardList({ products, category_id }) {
           swiper.params.navigation.prevEl = prevRef.current;
           swiper.params.navigation.nextEl = nextRef.current;
         }}
-        loop={true}
+        loop={data.length > 5}
         slidesPerView={5}
         spaceBetween={20}
         centeredSlides={false}
@@ -92,20 +93,22 @@ export default function CardList({ products, category_id }) {
           0: { slidesPerView: 1 },
         }}
       >
-        {data.map((product) => (
-          <SwiperSlide  key={product.id}>
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              price_before={product.price_before}
-              price={product.price}
-              stock={product.stock}
-              image_cover={product.image_cover}
-            />
-          </SwiperSlide>
-        ))}
+        {data.map((product) => {
+          if(exceptProduct === product.id)return <div key={product.id}></div>
+          return(
+            <SwiperSlide key={product.id}>
+              <ProductCard
+                id={product.id}
+                title={product.title}
+                description={product.description}
+                price_before={product.price_before}
+                price={product.price}
+                stock={product.stock}
+                image_cover={product.image_cover}
+              />
+            </SwiperSlide>
+          )
+        })}
       </Swiper>
     </div>
   );

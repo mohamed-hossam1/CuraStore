@@ -9,22 +9,24 @@ export const revalidate = 3600;
 
 export default async function ProductPage({ params }) {
   const { id } = await params;
-  let product, relatedProducts;
+  let product, allCategoryProducts;
   try {
     product = await getProductFromServer(id);
     
     if (product?.category_id) {
-      const allCategoryProducts = await getProductsByCategoryFromServer(product.category_id);
-      relatedProducts = allCategoryProducts.filter(p => p.id !== product.id);
+      allCategoryProducts = await getProductsByCategoryFromServer(product.category_id);
     }
+
   } catch (error) {
     redirect("/not-found");
   }
 
+  console.log(product)
+
   return (
     <ProductShow 
       product={product} 
-      relatedProducts={relatedProducts || []} 
+      allCategoryProducts={allCategoryProducts || []} 
     />
   );
 

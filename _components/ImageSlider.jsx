@@ -17,12 +17,14 @@ export default function ImageSlider({ images }) {
   };
 
   useEffect(() => {
+    if (images.length === 0) return;
+    
     const interval = setInterval(() => {
       sliderRight();
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
   let startX = 0;
   let endX = 0;
@@ -56,6 +58,16 @@ export default function ImageSlider({ images }) {
     }
   };
 
+  if (images.length === 0) {
+    return (
+      <div className="mx-6 items-center relative">
+        <div className="relative h-[420px] mb-6 rounded-2xl overflow-hidden bg-gray-200 flex items-center justify-center">
+          <p className="text-gray-500">No images available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section
       className="mx-6 items-center relative"
@@ -78,6 +90,8 @@ export default function ImageSlider({ images }) {
               className="object-contain rounded-2xl"
               src={image}
               alt={`Image ${i + 1}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
+              priority={i === 0}
             />
           </div>
         ))}

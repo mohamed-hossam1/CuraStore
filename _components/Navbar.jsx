@@ -16,7 +16,7 @@ export default function Navbar() {
   const allProducts = data || []
   console.log(allProducts)
 
-  const filteredProducts = allProducts.filter((p) =>{
+  const filteredProducts = allProducts?.filter((p) =>{
     return p.title.toLowerCase().includes(searchQuery.toLowerCase())
     }
   );
