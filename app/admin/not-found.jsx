@@ -1,6 +1,6 @@
 "use client";
 
-import LinkButton from "@/_components/LinkButton";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 
@@ -39,13 +39,13 @@ export default function NotFound() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        <LinkButton
+        <Link
           href="/"
           className="flex items-center gap-2 bg-sky-500 text-white px-6 py-3 rounded-2xl hover:bg-sky-600 transition-all"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Home
-        </LinkButton>
+        </Link>
       </motion.div>
     </div>
   );

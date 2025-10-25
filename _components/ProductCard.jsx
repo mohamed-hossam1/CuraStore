@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+
 
 export default function ProductCard({
   id,
@@ -41,10 +44,12 @@ export default function ProductCard({
           className="h-full w-full bg-gradient-to-br  from-gray-50 to-gray-100 flex justify-center items-center"
           transition={{ duration: 0.5 }}
         >
-          <motion.img
+          <Image
             src={image_cover}
-            alt={title}
-            className="h-full w-full from-gray-50 rounded-t-2xl to-gray-100 flex justify-center items-center"
+            alt={title || "Product image"}
+            width={600}
+            height={400}
+            className="object-cover rounded-t-2xl w-full h-64"
           />
         </motion.div>
 

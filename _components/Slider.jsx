@@ -1,5 +1,5 @@
 "use client"
-import Link from 'next/link';
+import LinkButton from "@/_components/LinkButton";
 import React, { useEffect, useState } from 'react'
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -138,12 +138,12 @@ export default function Slider() {
                 <span className="text-2xl xl:text-3xl font-bold">
                   {slide.text2}
                 </span>
-                <Link
+                <LinkButton
                   href={`/category/${slide.category}`}
                   className="hidden lg:block w-60 text-center relative text-2xl border-2 border-black rounded-xl px-5 py-3 font-bold text-black overflow-hidden lg:mb-10 z-[1] transition-all duration-500 ease-in-out hover:text-white bg-white before:content-[''] before:absolute before:left-0 before:top-0 before:w-1/2 before:h-full before:bg-black before:-translate-y-full before:transition-all before:duration-500 before:ease-in-out hover:before:translate-y-0 before:z-[-1] after:content-[''] after:absolute after:left-[50%] after:top-0 after:w-1/2 after:h-full after:bg-black after:translate-y-full after:transition-all after:duration-500 after:ease-in-out after:delay-[300ms] hover:after:translate-y-0 after:z-[-1]"
                 >
                   {slide.buText}
-                </Link>
+                </LinkButton>
               </div>
 
               <div className="w-full flex flex-col items-center gap-6 lg:w-2/5 lg:mr-32 ">
@@ -152,19 +152,19 @@ export default function Slider() {
                   alt={slide.text}
                   className="min-w-[250px] max-w-[290px] lg:max-w-fit lg:min-w-[300px] mx-auto"
                 />
-                <Link
+                <LinkButton
                   href={`/category/${slide.category}`}
                   className="lg:hidden relative text-2xl border-2 border-black rounded-xl px-5 py-3 font-bold text-black overflow-hidden lg:mb-10 z-[1] transition-all duration-500 ease-in-out hover:text-white bg-white before:content-[''] before:absolute before:left-0 before:top-0 before:w-1/2 before:h-full before:bg-black before:-translate-y-full before:transition-all before:duration-500 before:ease-in-out hover:before:translate-y-0 before:z-[-1] after:content-[''] after:absolute after:left-[50%] after:top-0 after:w-1/2 after:h-full after:bg-black after:translate-y-full after:transition-all after:duration-500 after:ease-in-out after:delay-[300ms] hover:after:translate-y-0 after:z-[-1]"
                 >
                   {slide.buText}
-                </Link>
+                </LinkButton>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3.5 z-50">
+      <div className="dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3.5 z-40">
         {slides.map((_, i) => (
           <button
             className={`cursor-pointer min-w-5 h-5 border-2 rounded-full ${

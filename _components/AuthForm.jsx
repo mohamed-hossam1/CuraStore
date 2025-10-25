@@ -61,7 +61,6 @@ export default function AuthForm() {
         });
 
         if (error) throw error;
-        console.log(data)
 
         router.push('/');
         router.refresh();

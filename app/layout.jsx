@@ -2,6 +2,8 @@ import "./globals.css";
 import Navbar from "../_components/Navbar";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import { getProductsFromServer } from "@/lib/services/productService";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 
 export const metadata = {
   title: "MegaMart",
@@ -9,14 +11,14 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const data = await getProductsFromServer();
   
   return (
     <html lang="en">
       <body className="bg-white">
         <ReactQueryProvider>
-          <Navbar initialData={data || []} />
+          <Navbar/>
           {children}
+          <ReactQueryDevtools initialIsOpen={true} />
         </ReactQueryProvider>
       </body>
     </html>

@@ -28,3 +28,20 @@ export function useGetProduct(id,initialData, select="*") {
 }
 
 
+
+export function getProductsByCategory(categoryId, initialData) {
+
+  return useQuery({
+    queryKey: ["products", "category", categoryId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category_id', categoryId)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false }); 
+    return data ; 
+    },
+    initialData,
+  });
+}

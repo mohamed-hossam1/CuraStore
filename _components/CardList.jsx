@@ -1,76 +1,49 @@
 "use client";
 
-import React from "react";
-import { AlertCircle, Package } from "lucide-react";
+import React, { useRef } from "react";
+import { AlertCircle, MoveLeft, MoveRight, Package } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { useGetProducts } from '../hooks/useProducts';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
-export default function CardList({initialData}) {
-  const {data, isLoading, isError, error} = useGetProducts(initialData)
-  const Products = data || null;
+import {getProductsByCategory} from "../hooks/useProducts"
 
-  if (isLoading) {
-    return (
-      <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mb-20">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 md:gap-8 lg:gap-10">
-          {[...Array(7)].map((_, i) => (
-            <div
-              className="w-70 bg-white rounded-2xl overflow-hidden shadow-lg"
-              key={i}
-            >
-              <div className="relative h-64 bg-gray-200 animate-pulse">
-                <div className="absolute top-4 left-4 h-6 w-16 bg-gray-300 rounded-full"></div>
-                <div className="absolute top-4 right-4 h-10 w-10 bg-gray-300 rounded-full"></div>
-              </div>
+function NextArrow({ onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className="hidden md:flex items-center justify-center absolute -right-6 top-1/2 -translate-y-1/2 z-30 bg-slate-800 hover:bg-slate-950 text-white w-10 h-10 rounded-full cursor-pointer shadow-lg transition"
+    >
+      <MoveRight className="text-lg" />
+    </div>
+  );
+}
 
-              <div className="p-5 h-60 flex flex-col justify-around space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="h-8 w-1/3 bg-gray-300 rounded animate-pulse"></div>
-                  <div className="h-4 w-1/4 bg-gray-300 rounded animate-pulse"></div>
-                </div>
+function PrevArrow({ onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className="hidden md:flex items-center justify-center absolute -left-6 top-1/2 -translate-y-1/2 z-30 bg-slate-800 hover:bg-slate-950 text-white w-10 h-10 rounded-full cursor-pointer shadow-lg transition"
+    >
+      <MoveLeft className="text-lg" />
+    </div>
+  );
+}
 
-                <div className="h-6 w-4/5 bg-gray-200 rounded animate-pulse"></div>
+export default function CardList({ products, category_id }) {
+  const [isLoading, isError] = [false, false];
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
-                <div className="space-y-2">
-                  <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
-                </div>
+  const {data} = getProductsByCategory(category_id, products);
 
-                <div className="h-12 w-full bg-gray-300 rounded-xl animate-pulse"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
-  if (isError) {
-    return (
-      <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mb-20">
-        <div className="flex flex-col justify-center items-center py-16 px-6">
-          <div className="bg-red-50 rounded-full p-6 mb-6">
-            <AlertCircle className="w-16 h-16 text-red-500" />
-          </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3 text-center">
-            There was an error loading the Products.
-          </h3>
-          <p className="text-gray-600 text-center mb-6 max-w-md">
-            {error?.message ||
-              "Sorry, an unexpected error occurred. Please try again later."}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
-          >
-            Try again
-          </button>
-        </div>
-      </div>
-    );
-  }
+  
 
-  if (!Products || Products.length === 0) {
+
+  if (!data || data.length === 0) {
     return (
       <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mb-20">
         <div className="flex flex-col justify-center items-center py-16 px-6">
@@ -89,23 +62,51 @@ export default function CardList({initialData}) {
   }
 
   return (
-    <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mb-20">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-center justify-items-center gap-6">
-        {data.map((product) => (
-          
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            title={product.title}
-            description={product.description}
-            price_before={product.price_before}
-            price={product.price}
-            stock={product.stock}
-            image_cover={product.image_cover}
-          />
-          
-        ))}
+    <div className="">
+      <div ref={prevRef}>
+        <PrevArrow />
       </div>
+      <div ref={nextRef}>
+        <NextArrow />
+      </div>
+
+      <Swiper
+        modules={[Navigation]}
+        navigation={{
+          prevEl: prevRef.current,
+          nextEl: nextRef.current,
+        }}
+        onBeforeInit={(swiper) => {
+          swiper.params.navigation.prevEl = prevRef.current;
+          swiper.params.navigation.nextEl = nextRef.current;
+        }}
+        loop={true}
+        slidesPerView={5}
+        spaceBetween={20}
+        centeredSlides={false}
+        breakpoints={{
+          1700: { slidesPerView: 5 },
+          1400: { slidesPerView: 4 },
+          1100: { slidesPerView: 3 },
+          680: { slidesPerView: 2 },
+          0: { slidesPerView: 1 },
+        }}
+      >
+        {data.map((product) => (
+          <SwiperSlide  key={product.id}>
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              description={product.description}
+              price_before={product.price_before}
+              price={product.price}
+              stock={product.stock}
+              image_cover={product.image_cover}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }

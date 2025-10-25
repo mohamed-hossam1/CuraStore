@@ -1,18 +1,18 @@
 "use client";
 
-import Link from 'next/link'
 import React, { useState } from 'react'
 import { ShoppingCart, User, Heart, Search} from 'lucide-react';
 import SearchResults from './SearchResults';
 import { useGetProducts } from '../hooks/useProducts';
+import LinkButton from './LinkButton';
 
-export default function Navbar({initialData}) {
+export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   
   const isAuthenticated = false;
   const cartItemsCount = 999;
 
-  const {data} = useGetProducts(initialData)
+  const {data} = useGetProducts()
   const allProducts = data || []
   console.log(allProducts)
 
@@ -21,12 +21,21 @@ export default function Navbar({initialData}) {
     }
   );
 
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setSearchQuery('');
+    }
+  }
+
+  
+
   return (
-    <div className="relative">
+    <div className="relative" onKeyDown={handleKeyDown}>
       <nav className="px-12 lg:px-20 xl:px-28 flex justify-between py-5 items-center bg-white text-gray-600 shadow-sm">
-        <Link href="/" className="font-extrabold text-3xl text-sky-500 hover:text-sky-700 transform duration-300">
+        <LinkButton href='/' className="font-extrabold text-3xl text-sky-500 hover:text-sky-700 transform duration-300">
           MegaMart
-        </Link>
+        </LinkButton>
 
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -43,27 +52,27 @@ export default function Navbar({initialData}) {
         </form>
 
         <div className="flex items-center gap-4">
-          <Link href={isAuthenticated ? "/profile" : "/auth"} className="flex items-center hover:text-sky-500 transform duration-300">
+          <LinkButton href={isAuthenticated ? "/profile" : "/auth"} className="flex items-center hover:text-sky-500 transform duration-300">
             <User size={35} className="text-sky-500" />
             <span className="font-bold pl-2 hidden lg:inline">
               {isAuthenticated ? "Profile" : "Sign In"}
             </span>
-          </Link>
+          </LinkButton>
           {
             isAuthenticated?
             <>
-            <Link href="/cart" className="flex items-center hover:text-sky-500  pl-2 relative hover:scale-110 transform duration-300">
+            <LinkButton href="/cart" className="flex items-center hover:text-sky-500  pl-2 relative hover:scale-110 transform duration-300">
               <ShoppingCart size={35} className="text-sky-500" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center font-bold">
                   {cartItemsCount}
                 </span>
               )}
-            </Link>
+            </LinkButton>
 
-            <Link href="/wishlist" className="flex items-center hover:text-sky-500  pl-2 relative hover:scale-110 transform duration-300">
+            <LinkButton href="/wishlist" className="flex items-center hover:text-sky-500  pl-2 relative hover:scale-110 transform duration-300">
               <Heart size={35} className="text-sky-500" />
-            </Link>
+            </LinkButton>
             </>
           :""
           }
@@ -72,7 +81,7 @@ export default function Navbar({initialData}) {
 
       {searchQuery && (
         <div className="absolute top-full left-0 right-0 z-50 px-12 lg:px-20 xl:px-28">
-          <SearchResults products={filteredProducts} />
+          <SearchResults products={filteredProducts}  setSearchQuery={setSearchQuery} />
         </div>
       )}
     </div>

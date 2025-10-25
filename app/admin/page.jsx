@@ -1,31 +1,32 @@
-// import StatusOverview from "./_components/StatusOverview";
-// import DashboardCharts from "./_components/dashboard-charts";
-// import RecentOrders from "@/app/(dashboard)/orders/_components/orders-table";
-
-import SalesOverview from "@/_components/SalesOverview";
+import CardDataStats from '@/_components/admin/CardDataStats'
+import { Eye, ShoppingBag, ShoppingCart, UsersRound } from 'lucide-react'
+import React from 'react'
 
 export const metadata = {
-  title: 'Sign In / Sign Up - MegaMart',
-  description: 'Login or create a new account',
+  title: 'Admin - MegaMart',
+  description: 'Admin dashboard',
 }
-export default async function DashboardPage() {
+
+export default function page() {
   return (
-    <>
-      <section>
-        <h1 className="text-lg md:text-xl font-semibold mb-6">Dashboard Overview</h1>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
 
-        <div className="space-y-8 mb-8">
-          <SalesOverview />
-          {/* <StatusOverview /> */}
-          {/* <DashboardCharts /> */}
-        </div>
-      </section>
+        <CardDataStats title="Total views" total="$3.456K" >
+          <Eye color='#fff'/>
+        </CardDataStats>
 
-      <section>
-        {/* <PageTitle component="h2">Recent Orders</PageTitle>
+        <CardDataStats title="Total Profit" total="$45,2K" >
+          <ShoppingCart color='#fff'/>
+        </CardDataStats>
 
-        <RecentOrders /> */}
-      </section>
-    </>
-  );
+        <CardDataStats title="Total Product" total="2.450" >
+          <ShoppingBag color='#fff'/>
+        </CardDataStats>
+
+        <CardDataStats title="Total Users" total="3.456" >
+          <UsersRound color='#fff'/>
+        </CardDataStats>
+        
+      </div>
+  )
 }
